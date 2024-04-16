@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<!--
+  Customize this policy to fit your own app's needs. For more guidance, see:
+  https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+  Some notes:
+  * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+  * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+  * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+  * Enable inline JS: add 'unsafe-inline' to default-src
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:; script-src 'self' https://cdnjs.cloudflare.com/ https://www.gstatic.com/ 'unsafe-eval';">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="theme-color" content="#2196f3">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<title>Bloom Bookstore</title>
+	<link rel="apple-touch-icon" href="img/f7-icon-square.png">
+	<link rel="icon" href="img/f7-icon.png">
+	<link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.css">
+</head>
+
+<body>
+	<div id="app">
+		<!-- Status bar overlay for fullscreen mode-->
+		<div class="statusbar"></div>
+		<!-- Main view -->
+		<div class="view view-main view-init ios-edges" data-url="/">
+			<div class="page">
+				<nav class="navbar">
+					<div class="navbar-inner">
+						<h1 class="title sliding">Bloom Bookstore</h1>
+					</div>
+				</nav>
+				<main class="page-content">
+					<!-- content goes there -->
+					<div class="tabs">
+						<div id="tab1" class="block tab tab-active">
+							
+							<p>Welcome to Bloom Bookstore</p>
+								<div class="row">&nbsp;
+									<p id="loginSignin" class="segmented segmented-raised">
+										<a href="#" class="button login-screen-open" data-login-screen=".signupYes">Sign
+											Up</a>
+										<a href="#" class="button button-active login-screen-open"
+											data-login-screen=".loginYes">Sign In</a>
+									</p>
+								</div>
+						</div>
+						<div id="tab2" class="block tab">
+							<div class="row">&nbsp;<button id="logout" class="button button-raised">Logout</button>
+							</div>
+							<!-- Green FAB -->
+							<div class="fab fab-right-bottom color-green">
+								<a href="#" data-sheet=".add-item" class="sheet-open">
+									<i class="icon f7-icons">Add</i>
+								</a>
+							</div>
+							<div id="bookList">This is for the display of book list</div>
+						</div>
+					</div>
+				</main>
+				<div class="login-screen loginYes">
+					<div class="view">
+						<div class="page">
+							<div class="page-content login-screen-content">								
+								<form id="loginForm">
+									<div class="list">
+										<ul>
+											<li class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Username</div>
+													<div class="item-input-wrap">
+														<input type="text" name="username" placeholder="Your email" />
+													</div>
+												</div>
+											</li>
+											<li class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Password</div>
+													<div class="item-input-wrap">
+														<input type="password" name="password"
+															placeholder="Your password" />
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="list">
+										<ul>
+											<li><button type="submit" id="signInButton"
+													class="button button-active">Sign In</a>
+											</li>
+										</ul>
+										<div class="block-footer">
+											<p id="signInError"></p>
+											<p><a class="link login-screen-close" href="#">Close Login Screen</a></p>
+										</div>
+									</div>
+								</form>
+								<div id="bookList" class="list">
+									<!-- Book cards -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="login-screen signupYes">
+					<div class="view">
+						<div class="page">
+							<div class="page-content login-screen-content">								
+								<form id="signUpForm">
+									<div class="list">
+										<ul>
+											<li class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Username</div>
+													<div class="item-input-wrap">
+														<input type="text" name="username" placeholder="Your email" />
+													</div>
+												</div>
+											</li>
+											<li class="item-content item-input">
+												<div class="item-inner">
+													<div class="item-title item-label">Password</div>
+													<div class="item-input-wrap">
+														<input type="password" name="password"
+															placeholder="Your password" />
+													</div>
+												</div>
+											</li>
+										</ul>
+									</div>
+									<div class="list">
+										<ul>
+											<li><button id="signUpButton" type="submit"
+													class="button button-active">Sign Up</button>
+											</li>
+										</ul>
+										<div class="block-footer">
+											<p id="signUpError"></p>
+											<p><a class="link login-screen-close" href="#">Close Login Screen</a></p>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Book drawer -->
+				<form id="addItem" class="sheet-modal add-item list" style="height: 500px;">
+					<div class="toolbar">
+						<div class="toolbar-inner block">
+							<div class="left">Add a Book</div>
+							<p id="closeSave" class="segmented segmented-raised">
+								<a href="#" class="button sheet-close">Close
+								</a>
+								<button type="submit" class="button button-active">Save</button>
+							</p>
+						</div>
+					</div>
+					<div class="sheet-modal-inner">
+						<ul>
+							<li>
+								<div class="item-content item-input">
+									<div class="item-inner">
+										<label for="title" class="item-title item-label">Title:</label>
+										<div class="item-input-wrap">
+											<input id="title" type="text" name="title" placeholder="Enter book title" class="">
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="item-content item-input">
+									<div class="item-inner">
+										<label for="author" class="item-title item-label">Author:</label>
+										<div class="item-input-wrap">
+											<input id="author" type="text" name="author" placeholder="Enter author name" class="">
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="item-content item-input">
+									<div class="item-inner">
+										<label for="genre" class="item-title item-label">Genre:</label>
+										<div class="item-input-wrap">
+											<input id="genre" type="text" name="genre" placeholder="Enter book genre" class="">
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="item-content item-input">
+									<div class="item-inner">
+										<label for="published" class="item-title item-label">Published:</label>
+										<div class="item-input-wrap">
+											<input id="published" type="text" name="published" placeholder="Enter publish date" class="">
+										</div>
+									</div>
+								</div>
+							</li>
+							<li>
+								<div class="item-content item-input">
+									<div class="item-inner">
+										<label for="imageUrl" class="item-title item-label">Image Url:</label>
+										<div class="item-input-wrap">
+											<input id="imageUrl" type="url" name="imageUrl" placeholder="Enter image url" class="">
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.16.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.js"></script>
+	<script src="./index.js" type="module"></script>
+
+</body>
+
+</html>
